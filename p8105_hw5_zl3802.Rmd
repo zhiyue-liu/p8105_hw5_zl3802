@@ -11,6 +11,43 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Problem 1
 
+```{r}
+library(tidyverse)
+set.seed(1)
+
+birthday_match = function(n) {
+  birthdays = sample(1:365, size = n, replace = TRUE)
+  any(duplicated(birthdays))
+}
+
+birthday_results =
+  expand_grid(
+    group_size = 2:50,
+    iter = 1:10000
+  ) |>
+  mutate(
+    shared_birthday = map_lgl(group_size, birthday_match)
+  ) |>
+  group_by(group_size) |>
+  summarize(
+    probability = mean(shared_birthday)
+  )
+
+birthday_results |>
+  ggplot(aes(x = group_size, y = probability)) +
+  geom_line() +
+  labs(
+    x = "Group Size",
+    y = "Probability of Shared Birthday"
+  )
+```
+
+The probability of sharing a birthday increases as the group size increases. With around 23 people, the probability is about 50%. By 50 people, the probability is approximately 97%.
+
 ## Problem 2
+
+
+
+
 
 ## Problem 3
