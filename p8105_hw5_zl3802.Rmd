@@ -46,8 +46,50 @@ The probability of sharing a birthday increases as the group size increases. Wit
 
 ## Problem 2
 
+```{r}
+full_df =
+  tibble(
+    files = list.files("data/"),
+    path = str_c("data/", files)
+  ) |>
+mutate(data = map(path, \(x) read_csv(x, show_col_types = FALSE)))|>
+  unnest(cols = data)
+```
 
 
+```{r}
+tidy_df =
+  full_df |>
+  mutate(
+    files = str_replace(files, ".csv", ""),
+    arm = str_sub(files, 1, 3)
+  ) |>
+  pivot_longer(
+    week_1:week_8,
+    names_to = "week",
+    values_to = "outcome",
+    names_prefix = "week_"
+  ) |>
+  mutate(week = as.numeric(week)) |>
+  select(arm, subject_id = files, week, outcome)
+
+tidy_df
+```
+
+
+```{r}
+tidy_df |>
+  ggplot(aes(x = week, y = outcome, group = subject_id, color = arm)) +
+  geom_point() +
+  geom_path() +
+  facet_grid(~arm) +
+  labs(
+    x = "Week",
+    y = "Outcome"
+  )
+```
+
+The control group stays relatively stable over time, while the experimental group shows an increasing trend. There is some variation between subjects in both groups.
 
 
 ## Problem 3
