@@ -1,0 +1,16 @@
+---
+title: "Homework 5"
+author: "Zhiyue Liu"
+date: "2026-11-17"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Problem 1
+
+## Problem 2
+
+## Problem 3
